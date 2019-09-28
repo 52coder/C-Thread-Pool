@@ -1,10 +1,9 @@
-![Build status](http://178.62.170.124:3000/pithikos/c-thread-pool/badge/?branch=master)
 
 # C Thread Pool
 
 This is a minimal but advanced threadpool implementation.
 
-  * ANCI C and POSIX compliant
+  * ANSI C and POSIX compliant
   * Pause/resume/wait as you like
   * Simple easy-to-digest API
   * Well tested
