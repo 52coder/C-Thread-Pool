@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
 
 	char* p;
 	if (argc != 2){
-		puts("This testfile needs exactly one arguments");
+		puts("usage:./binary num_threads");
 		exit(1);
 	}
 	int num_threads = strtol(argv[1], &p, 10);

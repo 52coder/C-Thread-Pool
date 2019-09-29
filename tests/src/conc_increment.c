@@ -11,7 +11,8 @@ int sum=0;
 
 void increment() {
 	pthread_mutex_lock(&mutex);
-	sum ++;
+	/* although sum ++  sum++ all legal,use sum++ */
+	sum++;
 	pthread_mutex_unlock(&mutex);
 }
 
@@ -20,7 +21,7 @@ int main(int argc, char *argv[]){
 	
 	char* p;
 	if (argc != 3){
-		puts("This testfile needs excactly two arguments");
+		puts("usage:./binary num_jobs num_threads");
 		exit(1);
 	}
 	int num_jobs    = strtol(argv[1], &p, 10);

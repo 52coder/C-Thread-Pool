@@ -5,8 +5,8 @@
 #include "../../thpool.h"
 
 
-void sleep_2_secs(){
-	sleep(2);
+void sleep_5_secs(){
+	sleep(5);
 	puts("SLEPT");
 }
 
@@ -17,22 +17,29 @@ int main(int argc, char *argv[]){
 	threadpool thpool;
 
 	/* Test if we can get the current number of working threads */
-	thpool = thpool_init(10);
-	thpool_add_work(thpool, (void*)sleep_2_secs, NULL);
-	thpool_add_work(thpool, (void*)sleep_2_secs, NULL);
-	thpool_add_work(thpool, (void*)sleep_2_secs, NULL);
-	thpool_add_work(thpool, (void*)sleep_2_secs, NULL);
+	/*Test jobs equal to thread*/
+	thpool = thpool_init(5);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
 	sleep(1);
 	num = thpool_num_threads_working(thpool);
-	if (thpool_num_threads_working(thpool) != 4) {
-		printf("Expected 4 threads working, got %d", num);
+	if (num != 5) {
+		printf("Expected 5 threads working, got %d", num);
 		return -1;
 	};
 
-	/* Test (same as above) */
+	/* Wait until all jobs have finished */
+	thpool_wait(thpool);
+	/* Destroy the threadpool */
+	thpool_destroy(thpool);
+
+	/* Test jobs less than thread */
 	thpool = thpool_init(5);
-	thpool_add_work(thpool, (void*)sleep_2_secs, NULL);
-	thpool_add_work(thpool, (void*)sleep_2_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
 	sleep(1);
 	num = thpool_num_threads_working(thpool);
 	if (num != 2) {
@@ -40,9 +47,30 @@ int main(int argc, char *argv[]){
 		return -1;
 	};
 
-	// thpool_destroy(thpool);
+	thpool_wait(thpool);
+	thpool_destroy(thpool);
 
-	// sleep(1); // Sometimes main exits before thpool_destroy finished 100%
 
+	/* Test jobs more than thread */
+	thpool = thpool_init(5);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	thpool_add_work(thpool, (void*)sleep_5_secs, NULL);
+	sleep(1);
+	num = thpool_num_threads_working(thpool);
+	if (num != 5) {
+		printf("Expected 5 threads working, got %d", num);
+		return -1;
+	};
+
+	thpool_wait(thpool);
+	thpool_destroy(thpool);
 	return 0;
 }

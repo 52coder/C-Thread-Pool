@@ -70,7 +70,7 @@ typedef struct jobqueue{
 
 /* Thread */
 typedef struct thread{
-	int       id;                        /* friendly id               */
+	int       id;                        /* friendly id,ex 0,1,2 etc  */
 	pthread_t pthread;                   /* pointer to actual thread  */
 	struct thpool_* thpool_p;            /* access to thpool          */
 } thread;
@@ -456,8 +456,6 @@ static void jobqueue_push(jobqueue* jobqueue_p, struct job* newjob){
 
 
 /* Get first job from queue(removes it from queue)
- *
- * Notice: Caller MUST hold a mutex
  */
 static struct job* jobqueue_pull(jobqueue* jobqueue_p){
 
